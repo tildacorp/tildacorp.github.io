@@ -5,6 +5,7 @@ date:   2020-06-21 12:59:59
 categories: Neuroevolution
 tags: neuroevolution genetic_algorithm reinforcement_learning uber_ai
 excerpt: Deep Neuroevolution - Genetic Algorithm 기초 다시보기
+background: '/img/backgrounds/neuroevolution.png'
 use_math: true
 ---
 
