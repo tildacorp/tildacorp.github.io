@@ -16,3 +16,4 @@ gem "wdm", "~> 0.1.0" if Gem.win_platform?
 
 # Emoji
 gem "jemoji"
+gem "webrick", "~> 1.7"
