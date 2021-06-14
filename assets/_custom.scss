@@ -1,0 +1,142 @@
+/* 글 본문 폰트 적용*/
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    // font-family: 'Nanum Gothic Coding', serif;
+}
+
+/* 블로그 들어갔을때 글 제목 폰트 변경*/
+div {
+    article{
+        h2{
+            a{
+                font-family: 'Noto Sans KR', sans-serif;
+                // font-family: 'Nanum Gothic Coding', serif;
+            }
+        }
+    }
+}
+/* 글 내의 타이틀 변경*/
+article{
+    div{
+        header{
+            h1{
+                font-family: 'Noto Sans KR', sans-serif;
+                // font-family: 'Nanum Gothic Coding', serif;
+            }
+        }
+    }
+}
+article{
+    div{
+        section{
+            h2{
+                font-family: 'Noto Sans KR', sans-serif;
+                // font-family: 'Nanum Gothic Coding', serif;
+            }
+        }
+    }
+}
+div{
+    article{
+        div{
+            a{
+                font-family: 'Noto Sans KR', sans-serif;
+                // font-family: 'Nanum Gothic Coding', serif;
+            }
+        }
+    }
+}
+
+/* 이미지 센터 정렬용 */
+.center {
+    display: block;
+    margin: auto;
+}
+
+/* for table */
+table {
+    margin: auto;
+    border-collapse: collapse;
+    text-align: left;
+    line-height: 1.5;
+    thead {
+        th {
+            text-align: center;
+            padding: 10px;
+            font-weight: bold;
+            vertical-align: top;
+            color: #1b3453;
+            border-top: 2px solid #1b3453;
+            border-bottom: 2px solid #1b3453;
+        }
+    }
+    tbody {
+        th {
+            padding: 10px 15px;
+            font-weight: bold;
+            vertical-align: top;
+            border-bottom: 1px solid #ccc;
+            background: #f3f6f7;
+        }
+    }
+    td {
+        padding: 10px 15px;
+        vertical-align: top;
+        border-bottom: 1px solid #ccc;
+    }
+}
+
+/* link */
+
+.link_button a {
+    &:link { color: white; background-color: #03a87c; text-decoration: none; text-shadow: 0 0 24px; }
+    &:visited { color: white; }
+    &:hover { color: white; background-color: #038f6a; text-decoration: none;}
+}
+
+/* custom table */
+.table-latitude {
+    width: 100%;
+    caption {
+        text-transform: uppercase;
+        font-weight: bold;
+        color: #ff7f50;
+        text-align: center;
+    }
+    thead {
+        border-top: 2px solid #ff7f50;
+        border-bottom: 2px solid #ff7f50;
+        th {
+            text-transform: uppercase;
+            text-align: center;
+            padding: 10px;
+            color: blue;
+            border: 1px solid #F1F1F1;
+        }
+    }
+    tbody {
+        tr {
+            border-bottom: 1px solid #F1F1F1;
+            color: grey;
+            td {
+                padding: 10px;
+                border: 1px solid #F1F1F1;
+            }
+            th {
+                padding-left: 10px;
+                border: 1px solid #F1F1F1;
+            }
+        }
+    }
+    tfoot {
+        color: #ff7f50;
+        font-style: italic;
+        border-bottom: 2px solid #ff7f50;
+        tr {
+            td {
+                padding: 10px;
+                border: 1px solid #F1F1F1;
+            }
+        }
+    }
+}
