@@ -1,19 +1,23 @@
-title:              olenmg's blog
-email:              o.olenmg@gmail.com
-description:        Development & Studying
-author:             olenmg
-baseurl:            "/"
-url:                "https://olenmg.github.io"
+title: Machine Learning Tech Blog
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "https://tildacorp.github.io/" # the base hostname & protocol for your site, e.g. http://example.com
 
-# Social Profiles
-twitter_username:   
-github_username:    olenmg
-facebook_username:  
-instagram_username:  
-linkedin_username:
+permalink: /:year/:month/:day/:title/
+timezone: "Asia/Seoul"
+
+# SEO
+tagline: machine learning, 머신러닝, 인공지능, 틸다, Tilda Corp.
+author: Tilda Corp., 틸다 (정지량)
+description: 머신러닝 블로그, machine learning blog
+lang: ko_KR
+
+# Other links
+github_username:  tildacorp
+email: support@tilda.co.kr
+linkedin_username: jiryang
 
 # Add your google-analytics ID here to activate google analytics
-google_analytics:   UA-XXXXXXXXX-X # out your google-analytics code
+google_analytics_id: G-RGBTCR03R6 # out your google-analytics code
 
 # Build settings
 markdown:           kramdown
