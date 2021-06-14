@@ -9,7 +9,7 @@ mathjax: true
 ---
 
 
-또 다시 ML의 큰 문제인 데이터에 대해 이야기하고, 이를 줄이기 위한 또 하나의 방법론에 대해 알아보도록 하겠습니다.
+또다시 ML의 큰 문제인 데이터에 대해 이야기하고, 이를 줄이기 위한 또 하나의 방법론에 대해 알아보도록 하겠습니다.
 
 
 Transfer learning이라는 말을 여기저기서 들어보셨을 것입니다. 'Pre-trained model로 신규 학습을 시작하는 것' 이라고 알고 계시는 분들도 많을 것 같습니다. 보통 image classifier나 object recognizer를 만드는 경우, 학습 데이터를 구하고, 네트워크를 정하고 나면 이 네트워크를 ImageNet 등으로 학습시킨 pre-trained model을 찾는 것이죠. Pre-trained model을 사용하면 새로운 데이터로 모델이 학습하는 속도를 빠르게 해 주기도 하고, 특히 내 데이터가 모델을 학습시키기에 충분치 않은 경우라면 pre-trained model을 찾느냐 못찾느냐는 classifier의 성패를 좌우하게 될 수도 있겠죠.
