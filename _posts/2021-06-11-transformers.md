@@ -47,9 +47,9 @@ Decoder는 $s_0$과 context vector $c$로 전달된 encoder의 정보에 decoder
 ![Fig6](https://tildacorp.github.io/img/seq2seq_rnn_attention_step2.PNG "Seq-to-seq with RNN and Attention (alignment scores))"){: width="70%"}{: .aligncenter}
 
 
-이제 계산된 alignment score에 softmax를 붙여 '가중치의 확률분포'를 구한 후, 이것과 encoded sequence의 linear combination (weighted sum)을 계산하여 context vector $c_1$을 만들어냅니다. Context vector $c_1$의 의미는 'decoder의 state가 $s_0$일 때 encoded input sequence에 적절한 가중치를 매겨 정보를 가져오면, 이후 decoder input $y_0$이 들어왔을 때 가장 적절한 $s_1$과 $y_1$을 만들어 낼 수 있다'는 정도라고 말할 수 있습니다. 글보다는 그림이 이해하기 쉽습니다:<br />
+이제 계산된 alignment score에 softmax를 붙여 '가중치의 확률분포'를 구한 후, 이것과 encoded sequence의 linear combination (weighted sum)을 계산하여 context vector $c_1$을 만들어냅니다. Context vector $c_1$의 의미는 'decoder의 state가 $s_0$일 때 encoded input sequence에 적절한 가중치를 매겨 정보를 context vector $c_1$으로 가져오면, 이후 decoder input $y_0$이 들어왔을 때 가장 적절한 $s_1$과 $y_1$을 만들어 낼 수 있다'는 정도라고 말할 수 있습니다. 글보다는 그림이 이해하기 쉽습니다:<br />
 
-![Fig7](https://tildacorp.github.io/img/seq2seq_rnn_attention_step4.PNG "Seq-to-seq with RNN and Attention (context vector))"){: width="80%"}{: .aligncenter}
-![Fig8](https://tildacorp.github.io/img/seq2seq_rnn_attention_step5.PNG "Seq-to-seq with RNN and Attention (first decoder output))"){: width="90%"}{: .aligncenter}
-![Fig9](https://tildacorp.github.io/img/seq2seq_rnn_attention_step6.PNG "Seq-to-seq with RNN and Attention (translation completion))"){: width="100%"}{: .aligncenter}
+![Fig7](https://tildacorp.github.io/img/seq2seq_rnn_attention_step3.PNG "Seq-to-seq with RNN and Attention (context vector))"){: width="80%"}{: .aligncenter}
+![Fig8](https://tildacorp.github.io/img/seq2seq_rnn_attention_step4.PNG "Seq-to-seq with RNN and Attention (first decoder output))"){: width="90%"}{: .aligncenter}
+![Fig9](https://tildacorp.github.io/img/seq2seq_rnn_attention_step5.PNG "Seq-to-seq with RNN and Attention (translation completion))"){: width="100%"}{: .aligncenter}
 
