@@ -3,9 +3,9 @@ layout: post
 background: '/img/backgrounds/transformers.jpg'
 title:  "Attention and Transformer"
 date:   2021-06-13 23:59:59
-categories: Transformer, Attention
-tags: reinforcement_learning policy_gradient
-excerpt: Policy-Based Reinforcement Learning
+categories: Transformer
+tags: attention_mechanism, transformers
+excerpt: 어텐션과 트랜스포머
 use_math: true
 ---
 오늘은 transformer와 그 근간이 되는 attention mechanism에 대해 알아보겠습니다.
@@ -17,3 +17,8 @@ use_math: true
 심리학이나 computational neuroscience에서는 attention mechanism을 '제한된 뇌의 computational power 때문에 task 수행 시 생기는 malfunction' 이라는 측면에서 인간의 뇌(주로 시각 영역)를 이해하는 데 있어서 중요한 현상으로 연구해 오기도 하였습니다. [The Invisible Gorilla](https://youtu.be/vJG698U2Mvo)라는 유명한 테스트에서는 task에 attention을 집중하다보면 커다란 visual input을 처리하지 못하게 되는 것을 보이기도 했고 (제가 스포일을 했으니 여러분들은 고릴라가 보이실겁니다), 이와 비슷하게 selective attention을 이용한 테스트 들은 여럿 있습니다 [change blindness test](https://youtu.be/_bnnmWYI0lM). 아래 그림은 Stroop effect라는걸 보여주는 테스트인데요, 색깔을 나타내는 단어들을 검은색으로 써 놓았을 때 혹은 색-단어가 매칭되도록 써 놓았을 때보다 색-단어의 mismatch가 생기도록 써 놓았을 때 사람들이 이 단어들을 읽는 속도가 더 느려진다는 실험입니다. 이것 역시 제한적인 뇌의 capacity로 인해 색 정보에 attention이 쏠려 text 정보를 처리하는데 방해가 된다는 selective attention으로 설명되기도 합니다 (다른 설명도 있긴 합니다).
 
 ![Fig1](https://tildacorp.github.io/img/stroop_test.jpg "Stroop Test"){: width="70%"}{: .aligncenter}
+
+
+이야기가 좀 샜는데요, 뇌에서 한계를 극복하기 위해 진화된 (visual) attentional mechanism이 딥러닝에서는 비슷하지만 조금 다른 context로 사용되게 됩니다. 이를 위해 attention이 사용되기 이전의 RNN의 sequence-to-sequence 동작 방식을 살펴보겠습니다.<br/>
+
+$
