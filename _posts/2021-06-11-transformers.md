@@ -104,3 +104,5 @@ Image caption generation의 논문 결과를 몇 개 보여드립니다:<br />
 <ul><li>Process image, attend to image regions, output text</li></ul>
 </li>
 </ul>
+
+예상보다 내용이 길어져 다음 포스트에어 이어가도록 하겠습니다.
