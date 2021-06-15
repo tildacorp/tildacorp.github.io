@@ -82,3 +82,5 @@ Seq-to-seq RNN에 attention mechanism을 구현하면서 추가된 softmax나 we
 
 ![Fig12](https://tildacorp.github.io/img/img2sec_attention_step4.PNG "Img-2-seq with CNN and Attention (caption translation completion))"){: width="100%"}{: .aligncenter}
 
+Image caption generation의 논문 결과를 몇 개 보여드립니다:<br />
+![Fig12](https://tildacorp.github.io/img/image_caption_generation.PNG "Image Caption Generation Results"){: width="70%"}{: .aligncenter}
