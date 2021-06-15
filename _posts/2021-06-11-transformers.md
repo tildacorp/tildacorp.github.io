@@ -29,4 +29,4 @@ RNN에서는 encoder가 input sequence를 순서대로 처리한 후, encoding�
 <p>
 Encoder: $h_t = f_w(x_t, h_{t-1})$
 </p>
-![Fig2](https://tildacorp.github.io/img/seq2seq_rnn_step1.png "Seq-to-seq with RNN (after encoding)"){: width="70%"}{: .aligncenter}
+![Fig2](https://tildacorp.github.io/img/seq2seq_rnn_step1.PNG "Seq-to-seq with RNN (after encoding)"){: width="70%"}{: .aligncenter}
