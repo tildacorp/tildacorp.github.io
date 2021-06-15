@@ -1,11 +1,12 @@
 ---
 layout: post
+background: '/img/backgrounds/facerecognition.jpeg'
 title:  "Open-Set Face Recognition: SphereFace, CosFace, and ArcFace"
 date:   2020-06-05 00:00:01
 categories: Deepfake
 tags: openset_face_recognition sphereface cosface arcface
 excerpt: 오픈셋 얼굴인식의 발전
-mathjax: true
+use_math: true
 ---
 
 오늘은 triplet을 이용한 FaceNet 이후의 xxxFace 시리즈에 대해 이야기를 해보려고 합니다. 양이 많습니다!<br>
@@ -20,18 +21,18 @@ Discriminative feature를 효과적으로 배워보자는 두 가지 시도가 �
 
 **Contrastive Loss**<br>
 Contrastive loss(또는 pairwise ranking loss)는 anchor-positive, anchor-negative pair를 구성해서 각 이미지를 Siamese network에 집어넣어 나온 feature들을 이용하여 다음의 loss를 최적화하게 됩니다:<br>
-$$L_{contrasive} = (1-Y) \frac 1 2 (\Vert f(x^i) - f(x^j) \Vert)^2 + Y \frac 1 2{max(0, m - \Vert f(x^i) - f(x^j) \Vert)}^2$$<br>
-$$Y$$: 바이너리 label (anchor-positive이면 0, anchor-negative이면 1)
-$$f(x^i)$$: anchor sample<br>
-$$f(x^j)$$: positive 또는 negative sample<br><br>
-위 식에서 $$f(x^i) \approx f(x^j)$$ 이면 (anchor-positive set이란 얘기겠죠) $$Y$$의 값이 0이 되어서 위 loss 식의 앞 항만 남게 되며, anchor-positive 간의 닮은 정도만큼 $$(\Vert f(x^i) - f(x^j) \Vert)^2$$의 값이 작아져서 최종 loss는 Mean Squared Error (MSE)와 거의 같아집니다. 그 반대로 anchor-negative의 경우에는 loss 식의 뒷 항만 남게 되고, 이 때에도 마찬가지로 anchor-negative의 닮은 정도만큼 $$(\Vert f(x^i) - f(x^j) \Vert)^2$$의 값이 작아지긴 하지만 차이가 작으면 작을수록 loss값은 $$\frac 1 2 m^2$$에 근접하게 됩니다. 이렇게 m이 anchor-negative pair에 대한 margin 역할을 하는거죠.
+$L_{contrasive} = (1-Y) \frac 1 2 (\Vert f(x^i) - f(x^j) \Vert)^2 + Y \frac 1 2{max(0, m - \Vert f(x^i) - f(x^j) \Vert)}^2$<br>
+$Y$: 바이너리 label (anchor-positive이면 0, anchor-negative이면 1)
+$f(x^i)$: anchor sample<br>
+$f(x^j)$: positive 또는 negative sample<br><br>
+위 식에서 $f(x^i) \approx f(x^j)$ 이면 (anchor-positive set이란 얘기겠죠) $Y$의 값이 0이 되어서 위 loss 식의 앞 항만 남게 되며, anchor-positive 간의 닮은 정도만큼 $(\Vert f(x^i) - f(x^j) \Vert)^2$의 값이 작아져서 최종 loss는 Mean Squared Error (MSE)와 거의 같아집니다. 그 반대로 anchor-negative의 경우에는 loss 식의 뒷 항만 남게 되고, 이 때에도 마찬가지로 anchor-negative의 닮은 정도만큼 $(\Vert f(x^i) - f(x^j) \Vert)^2$의 값이 작아지긴 하지만 차이가 작으면 작을수록 loss값은 $\frac 1 2 m^2$에 근접하게 됩니다. 이렇게 m이 anchor-negative pair에 대한 margin 역할을 하는거죠.
 
 ![Fig2](https://jiryang.github.io/img/contrastive_loss_faces.png "Contrastive Loss"){: width="70%"}{: .aligncenter}
 
 
 
 **_FaceNet_ 의 Triplet Loss**<br>
-Triplet loss에 대해서는 [지난 포스트](https://jiryang.github.io/2020/05/23/FaceNet-and-one-shot-learning/)에서 설명드린 바 있습니다. $$d(A, P) < d(A, N) < d(A, P)+\alpha$$ 조건을 추가하여서 discriminative power를 좀 더 강화하였죠.
+Triplet loss에 대해서는 [지난 포스트](https://jiryang.github.io/2020/05/23/FaceNet-and-one-shot-learning/)에서 설명드린 바 있습니다. $d(A, P) < d(A, N) < d(A, P)+\alpha$ 조건을 추가하여서 discriminative power를 좀 더 강화하였죠.
 
 
 
@@ -47,29 +48,29 @@ Contrastive와 triplet loss 모두 기존의 softmax loss를 개선하여 latent
 
 
 SphereFace의 A-Softmax 식은 다음과 같습니다:<br>
-$$L_{SphereFace} = -\frac 1 N \sum_i log(\frac {e^{\Vert x_i \Vert cos(m\theta_{y_i}, i)}} {e^{\Vert x_i \Vert cos(m\theta_{y_i}, i)+\sum_{j \neq y_i}e^{\Vert x_i \Vert cos(\theta_j, i)}}})$$
+$L_{SphereFace} = -\frac 1 N \sum_i log(\frac {e^{\Vert x_i \Vert cos(m\theta_{y_i}, i)}} {e^{\Vert x_i \Vert cos(m\theta_{y_i}, i)+\sum_{j \neq y_i}e^{\Vert x_i \Vert cos(\theta_j, i)}}})$
 
 
 
 **_CosFace_ 의 Angular Loss**<br>
-SphereFace가 각도 값에 곱으로 margin (multiplicative angular margin, 위 식의 $\theta$ 앞에 붙은 $$m$$)을 주었는데요, 이 decision boundary는 아래 그림의 3번째 'A-Softmax'와 같이 Euler space에서의 vector로 표시될 수 있습니다 (위 그림의 (6)과 동일한겁니다). A-Softmax의 경우 $$\Vert \theta_1 - \theta_2 \Vert$$ 값에 따라 회색으로 표시된 decision margin이 변한다는 점 때문에, C1과 C2가 유사하다면 (얼굴이 비슷하다면) margin이 작아지는 단점이 있었습니다. 또한 gradient 계산을 용이하게 하기 위해 A-Softmax의 $m$은 정수여야 한다는 큰 단점이 있었습니다. Margin이 큰 값으로 변경되기 때문에 모델을 수렴시키기 어렵게 된 것이죠. Class similarity와 무관하게 constant한 margin을 보장해주고, 수렴을 위해 기존 softmax loss의 도움이 필요없도록 additive angular margin을 주는 loss를 만든 것이 CosFace입니다 (아래 그림의 Large Margin Cosine Loss, LMCL).
+SphereFace가 각도 값에 곱으로 margin (multiplicative angular margin, 위 식의 $\theta$ 앞에 붙은 $m$)을 주었는데요, 이 decision boundary는 아래 그림의 3번째 'A-Softmax'와 같이 Euler space에서의 vector로 표시될 수 있습니다 (위 그림의 (6)과 동일한겁니다). A-Softmax의 경우 $\Vert \theta_1 - \theta_2 \Vert$ 값에 따라 회색으로 표시된 decision margin이 변한다는 점 때문에, C1과 C2가 유사하다면 (얼굴이 비슷하다면) margin이 작아지는 단점이 있었습니다. 또한 gradient 계산을 용이하게 하기 위해 A-Softmax의 $m$은 정수여야 한다는 큰 단점이 있었습니다. Margin이 큰 값으로 변경되기 때문에 모델을 수렴시키기 어렵게 된 것이죠. Class similarity와 무관하게 constant한 margin을 보장해주고, 수렴을 위해 기존 softmax loss의 도움이 필요없도록 additive angular margin을 주는 loss를 만든 것이 CosFace입니다 (아래 그림의 Large Margin Cosine Loss, LMCL).
 
 ![Fig5](https://jiryang.github.io/img/decision_margin_comparison01.PNG "Comparison of Decision Margins"){: width="100%"}{: .aligncenter}
 
 
 CosFace의 LMCL formula입니다. LMCL의 additive angular margin을 SphereFace의 multiplicative angular margin과 비교해서 보시죠:<br>
-$$L_{CosFace} = -\frac 1 N \sum_i log(\frac {e^{s(cos(\theta_{y_i}, i)-m)}} {e^{s(cos(\theta_{y_i}, i)-m)}+\sum_{j \neq y_i}e^{s(cos(\theta_j, i)-m)}})$$
+$L_{CosFace} = -\frac 1 N \sum_i log(\frac {e^{s(cos(\theta_{y_i}, i)-m)}} {e^{s(cos(\theta_{y_i}, i)-m)}+\sum_{j \neq y_i}e^{s(cos(\theta_j, i)-m)}})$
 
 
 
 **_ArcFace_ 의 Angular Loss**<br>
-ArcFace는 additive cosine margin을 이용합니다 (CosFace는 additive angular margin이었죠). Logit에 $$arccos$$함수를 씌워서 similarity가 아닌 실제 angle (angular distance)을 뽑고, 여기에 margin penalty를 더한 후 $$cos$$함수로 logit을 복원하는 방식을 사용하여서 ArcFace라고 이름지었습니다. Normalized 된 hypersphere manifold 상에서 distance를 가지고 inter-class dispersion, intra-class compactness를 maximize하는 것이기 때문에 geodesic distance와 일치하는 angular margin을 사용한다는 점은 학습에 도움이 될 것입니다. 아래 angular plane에서의 decision boundary는 이와 같은 ArcFace의 장점을 보여줍니다. 앞서 보았던 decision margin과 비교해보면 CosFace의 경우 $$cos\theta$$를 axes로 놓고 그렸던 decision margin을 angular ($$\theta$$) plane에 그려보니 일정하지 않게 된 것을 볼 수 있습니다. 반면 ArcFace의 decision margin은 angle이 변함에 따라 constant 하지요.
+ArcFace는 additive cosine margin을 이용합니다 (CosFace는 additive angular margin이었죠). Logit에 $arccos$함수를 씌워서 similarity가 아닌 실제 angle (angular distance)을 뽑고, 여기에 margin penalty를 더한 후 $cos$함수로 logit을 복원하는 방식을 사용하여서 ArcFace라고 이름지었습니다. Normalized 된 hypersphere manifold 상에서 distance를 가지고 inter-class dispersion, intra-class compactness를 maximize하는 것이기 때문에 geodesic distance와 일치하는 angular margin을 사용한다는 점은 학습에 도움이 될 것입니다. 아래 angular plane에서의 decision boundary는 이와 같은 ArcFace의 장점을 보여줍니다. 앞서 보았던 decision margin과 비교해보면 CosFace의 경우 $cos\theta$를 axes로 놓고 그렸던 decision margin을 angular ($\theta$) plane에 그려보니 일정하지 않게 된 것을 볼 수 있습니다. 반면 ArcFace의 decision margin은 angle이 변함에 따라 constant 하지요.
 
 ![Fig6](https://jiryang.github.io/img/decision_margin_comparison02.PNG "Comparison of Decision Margins"){: width="100%"}{: .aligncenter}
 
 
-ArcFace의 loss formula입니다. $$cos$$를 벗겨서 margin을 넣고 다시 $$cos$$를 씌워주었기 때문에 LMCL과 달리 additive margin이 $$cos$$함수 안에 들어있는 것을 볼 수 있습니다:<br>
-$$L_{ArcFace} = -\frac 1 N \sum_i log(\frac {e^{s(cos(\theta_{y_i}+m))}} {e^{s(cos(\theta_{y_i}+m))}+\sum_{j=1,j \neq y_i}e^{scos\theta_j}})$$
+ArcFace의 loss formula입니다. $cos$를 벗겨서 margin을 넣고 다시 $cos$를 씌워주었기 때문에 LMCL과 달리 additive margin이 $cos$함수 안에 들어있는 것을 볼 수 있습니다:<br>
+$L_{ArcFace} = -\frac 1 N \sum_i log(\frac {e^{s(cos(\theta_{y_i}+m))}} {e^{s(cos(\theta_{y_i}+m))}+\sum_{j=1,j \neq y_i}e^{scos\theta_j}})$
 
 
 CASIA, LFW 등 다양한 face dataset에서 동일한 모델로 테스트한 결과 ArcFace는 기존 Euclidean space의 softmax기반 방식들보다도, angular space의 여타 솔루션들보다 더 좋은 성적을 거두었습니다 (더 많은 결과는 논문에서 확인).

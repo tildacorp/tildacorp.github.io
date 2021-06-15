@@ -1,11 +1,12 @@
 ---
 layout: post
+background: '/img/backgrounds/ecg.jpg'
 title:  "ECG, Neuron's Action Potential, and ANN"
 date:   2020-05-20 10:00:00
 categories: Health
 tags: ecg neuron actionpotential ann neuralnet
 excerpt: ECG와 뉴럴 네트워크의 관계?
-mathjax: true
+use_math: true
 ---
 
 오늘은 ECG 파형에 대해 간단히 이해를 해보고 (ECG 데이터를 가지고 리서치를 하려면 배경 지식이 좀 있으면 좋겠죠), 이 이야기를 뉴럴 네트워크까지 이어가보도록 하곘습니다.

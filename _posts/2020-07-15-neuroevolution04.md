@@ -1,5 +1,6 @@
 ---
 layout: post
+background: '/img/backgrounds/openairobot.jpg'
 title:  "Deep Neuroevolution - part4"
 date:   2020-07-15 01:00:01
 categories: ReinforcementLearning
@@ -22,11 +23,13 @@ _* 이미지는 MIT 6.S191 lecture slide에서 가져왔습니다. 대신 [유�
 
 
 MIT 6.S191에 대해 이야기한 김에, 이 강의에서 policy gradient의 학습 방법에 대해 자율주행차량의 예를 들면서 high-level로 굉장히 쉽게 설명한 부분이 있어서 보여드리고 시작하겠습니다. 우선 학습의 순서는 다음과 같습니다:
-1. Initialize the agent
-2. Run a policy until termination
-3. Record all states, actions, rewards
-4. Decrease probability of actions that resulted in low reward
-5. Increase probability of actions that resulted in high reward
+<ol>
+<li>Initialize the agent</li>
+<li>Run a policy until termination</li>
+<li>Record all states, actions, rewards</li>
+<li>Decrease probability of actions that resulted in low reward</li>
+<li>Increase probability of actions that resulted in high reward</li>
+</ol>
 
 그리고 그림으로 시나리오를 설명합니다:
 

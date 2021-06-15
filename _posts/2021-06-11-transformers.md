@@ -19,6 +19,14 @@ use_math: true
 ![Fig1](https://tildacorp.github.io/img/stroop_test.jpg "Stroop Test"){: width="70%"}{: .aligncenter}
 
 
-이야기가 좀 샜는데요, 뇌에서 한계를 극복하기 위해 진화된 (visual) attentional mechanism이 딥러닝에서는 비슷하지만 조금 다른 context로 사용되게 됩니다. 이를 위해 attention이 사용되기 이전의 RNN의 sequence-to-sequence 동작 방식을 살펴보겠습니다.<br/>
+이야기가 좀 샜는데요, 뇌에서 한계를 극복하기 위해 진화된 (visual) attentional mechanism이 딥러닝에서는 비슷하지만 조금 다른 context로 사용되게 됩니다. 이를 위해 attention이 사용되기 이전의 RNN의 sequence-to-sequence 동작 방식을 살펴보겠습니다. Sequence-to-sequence의 가장 이해하기 쉬운 예 중 하나인 번역 task로 설명합니다.
+<p>
+입력: $x_1, x_2, ..., x_T$의 sequence<br />
+출력: $y_1, y_2, ..., y_{T'}$의 sequence
+</p>
 
-$
+RNN에서는 encoder가 input sequence를 순서대로 처리한 후, encoding된 input 정보가 두 가지 형태로 decoder에 전달됩니다. 하나는 decoder의 initial (hidden) state인 $s_0$이고, 다른 하나는 context vector $c$ 입니다 (주로 $c = h_T$). 이 상태를 그림으로 나타내면 다음과 같습니다:
+<p>
+Encoder: $h_t = f_w(x_t, h_{t-1})$
+</p>
+![Fig2](https://tildacorp.github.io/img/seq2seq_rnn_step1.png "Seq-to-seq with RNN (after encoding)"){: width="70%"}{: .aligncenter}

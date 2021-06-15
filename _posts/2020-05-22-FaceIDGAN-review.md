@@ -1,5 +1,6 @@
 ---
 layout: post
+background: '/img/backgrounds/deepfake1.jpg'
 title:  "FaceID-GAN: Learning a Symmetry Three-Player GAN for Identity-Preserving Face Synthesis"
 date:   2020-05-22 10:59:59
 categories: Deepfake

@@ -1,5 +1,6 @@
 ---
 layout: post
+background: '/img/backgrounds/fsgan.png'
 title:  "FSGAN: Subject Agnostic Face Swapping and Reenactment"
 lang: kr
 lang-ref: fsgan

@@ -1,5 +1,6 @@
 ---
 layout: post
+background: '/img/backgrounds/alphago.jpg'
 title:  "Deep Neuroevolution - part3"
 date:   2020-07-14 00:00:01
 categories: ReinforcementLearning

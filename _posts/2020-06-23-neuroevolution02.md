@@ -1,5 +1,6 @@
 ---
 layout: post
+background: '/img/backgrounds/hyperneat.jpg'
 title:  "Deep Neuroevolution - part2"
 date:   2020-06-23 00:00:01
 categories: Neuroevolution
@@ -20,10 +21,11 @@ Gradient Descent              |  Neuroevolution
 
 
 Search space의 차원이 높은 경우 경험을 바탕으로 가치함수를 업데이트하는 방식으로 학습하는 RL보다 behavior를 직접 학습하는 NE가 성능이 더 좋을 것입니다. 음, 더 잘 이해하려면 RL에 대한 기본 지식이 있으면 좋은데, 일단은 강화학습에 대해 잘 정리된 블로그를 링크하고 넘어가도록 하고, 기회가 되면 다시 한 번 돌아보도록 하겠습니다 ([링크](https://greentec.github.io/tags/#reinforcement-learning), 열심히 공부하시는 분들이 많습니다 ^^). 이러한 NE의 가능성에도 불구하고 기존의 방식은 네트워크의 topology는 고정한 채 weight만 학습하는 경우가 대부분이었습니다. 2001년에 NEAT가 발표되기 전 네트워크의 구조를 학습하려는 시도가 전혀 없진 않았지만 썩 좋은 결과를 내지는 못하고 있었습니다. 'Topology(structure)를 weight와 동시에 학습하는 것이 weight만 학습하는 것과 비교해 성능이 더 좋은가?' 라는 질문에 답하기 위해서는 해결해야 할 문제들이 몇 가지 있습니다:
-
-1. Topology를 효과적으로 나타내고, crossover 및 mutation도 적용시킬 수 있는 genotype이 있는가?
-2. Topological evolution이 최적화될 수 있도록 보호해 줄 방법이 있는가?
-3. Topological evolution으로 인해 네트워크가 과다하게 복잡해지는 것을 효과적으로 조절할 방법이 있는가?
+<ol>
+<li>Topology를 효과적으로 나타내고, crossover 및 mutation도 적용시킬 수 있는 genotype이 있는가?</li>
+<li>Topological evolution이 최적화될 수 있도록 보호해 줄 방법이 있는가?</li>
+<li>Topological evolution으로 인해 네트워크가 과다하게 복잡해지는 것을 효과적으로 조절할 방법이 있는가?</li>
+</ol>
 
 NEAT는 이 세가지 질문에 대한 해답을 (그것도 biological grounding을 가진 해답을) 제시하면서 뜨거운 반응을 불러일으켰고, 이후 업그레이드 된 버전(HyperNEAT)까지 다양한 언어로 개발되어 여러 RL application에 적용되었습니다 ([Stanley 교수님의 NEAT 웹사이트](https://www.cs.ucf.edu/~kstanley/neat.html)로 NEAT의 확장에 대한 더 자세한 설명은 생략합니다). 이제 위의 세 질문에 대한 NEAT의 답변을 살펴보도록 하시죠.
 
@@ -55,14 +57,14 @@ NEAT는 이 세가지 질문에 대한 해답을 (그것도 biological grounding
 
 ##### Topological Crossover
 
-이제 대망의 crossover입니다. 이 그림만 이해하면 NEAT의 주요 설명은 끝난다고 볼 수 있습니다! 여차저차해서 connection gene list가 아래와 같이 생긴 두 parent가 elitism으로 선택되어 crossover를 통해 offspring을 만들게 되었습니다. 가운데 부분에 innovation number를 이용하여 앞서 설명드렸던 homologous한 gene의 정렬(synapsis라고 합니다)이 이루어진 것을 보실 수 있는데요, 두 네트워크가 상당히 다르게 생겼지만 innovation number를 통해 gene을 어떻게 align시켜야 하는지 쉽게 파악할 수 있습니다. 정렬된 상태에서 multi-point crossover가 수행된 것으로 보이는데요, line-up된 일부 connection gene 아래 'disjoint'와 'excess'라고 표기가 되어있습니다. NEAT의 crossover에서는 matching되는 gene(Innov 1$\sim$5)끼리는 multi-point crossover(random 선택)를, disjoint와 excess gene의 경우는 두 parent 중 fitness가 더 높은 쪽을 따르도록 (fitness가 같다면 얘들도 random) 정하였습니다. 그림에서 Offspring이 Innov 6, 7, 9, 10번 connection gene을 가지고 있는 것으로 보아 $Parent1_{fitness} \le Parent2_{fitness}$란걸 알 수 있겠네요. Offspring의 node gene list는 crossover된 connection gene list에 따라 구성하면 됩니다.
+이제 대망의 crossover입니다. 이 그림만 이해하면 NEAT의 주요 설명은 끝난다고 볼 수 있습니다! 여차저차해서 connection gene list가 아래와 같이 생긴 두 parent가 elitism으로 선택되어 crossover를 통해 offspring을 만들게 되었습니다. 가운데 부분에 innovation number를 이용하여 앞서 설명드렸던 homologous한 gene의 정렬(synapsis라고 합니다)이 이루어진 것을 보실 수 있는데요, 두 네트워크가 상당히 다르게 생겼지만 innovation number를 통해 gene을 어떻게 align시켜야 하는지 쉽게 파악할 수 있습니다. 정렬된 상태에서 multi-point crossover가 수행된 것으로 보이는데요, line-up된 일부 connection gene 아래 'disjoint'와 'excess'라고 표기가 되어있습니다. NEAT의 crossover에서는 matching되는 gene(Innov 1$\sim$5)끼리는 multi-point crossover(random 선택)를, disjoint와 excess gene의 경우는 두 parent 중 fitness가 더 높은 쪽을 따르도록 (fitness가 같다면 얘들도 random) 정하였습니다. 그림에서 Offspring이 Innov 6, 7, 9, 10번 connection gene을 가지고 있는 것으로 보아 ${Parent1}\_{fitness}$ &le; ${Parent2}\_{fitness}$ 란걸 알 수 있겠네요. Offspring의 node gene list는 crossover된 connection gene list에 따라 구성하면 됩니다.
 
 ![Fig6](https://jiryang.github.io/img/NEAT_topological_crossover.PNG "Topological Crossover of NEAT"){: width="80%"}{: .aligncenter}
 
 
 #### Topological evolution이 최적화될 수 있도록 보호해 줄 방법이 있는가?
 
-Crossover나 mutation으로 생겨난 topology가 변한 offspring이 처음부터 앞 generation에서 fitness가 높아 선택된 parent보다 더 성능이 좋을 가능성은 별로 없습니다. 이러한 새로운 sub-structure(_niche_ 라고도 합니다)가 task performance에 도움이 될 지는 추가적인 학습을 통해 해당 부분의 weight를 전체 weight와 같이 학습하고 최적화를 시켜봐야 알겠지요. 하지만 기존 NE 알고리즘으로는 _niche_ 가 생기자마자 다른 개체들과 무제한 경쟁에 들어가게 되어, 생기자마자 도태되는 현상이 반복되는걸 피할 방법이 없었습니다. 자연에서의 speciation(종분화)은 종 안에서 돌연변이 등으로 발생된 새로운 _niche_ 를 가진 개체군이 다른 개체군과 selective pressure를 받으면서 경쟁하다가 genotypic 또는 phenotypic 분기를 겪게 됩니다. 이 점에 착안해 NEAT에서는 chromosome의 similarity measure를 통해 compatible한 종을 구분하고, 이 안에서만 _niche_ 가 경쟁할 수 있도록 함으로써 새로이 발견된 structure가 성능 좋은 다른 종(dissimilar한 네트워크)으로부터 생존의 위협을 받지 않게끔 하였습니다. 여기서도 Innovation Number가 활용됩니다. Similarity는 앞서 보셨던 disjoint gene의 숫자($D$), eccess gene의 숫자($E$), 그리고 matching gene의 weight값의 차이($\overline{W}$)로 계산합니다:<br>
+Crossover나 mutation으로 생겨난 topology가 변한 offspring이 처음부터 앞 generation에서 fitness가 높아 선택된 parent보다 더 성능이 좋을 가능성은 별로 없습니다. 이러한 새로운 sub-structure(_niche_ 라고도 합니다)가 task performance에 도움이 될 지는 추가적인 학습을 통해 해당 부분의 weight를 전체 weight와 같이 학습하고 최적화를 시켜봐야 알겠지요. 하지만 기존 NE 알고리즘으로는 _niche_ 가 생기자마자 다른 개체들과 무제한 경쟁에 들어가게 되어, 생기자마자 도태되는 현상이 반복되는걸 피할 방법이 없었습니다. 자연에서의 speciation(종분화)은 종 안에서 돌연변이 등으로 발생된 새로운 _niche_ 를 가진 개체군이 다른 개체군과 selective pressure를 받으면서 경쟁하다가 genotypic 또는 phenotypic 분기를 겪게 됩니다. 이 점에 착안해 NEAT에서는 chromosome의 similarity measure를 통해 compatible한 종을 구분하고, 이 안에서만 _niche_ 가 경쟁할 수 있도록 함으로써 새로이 발견된 structure가 성능 좋은 다른 종(dissimilar한 네트워크)으로부터 생존의 위협을 받지 않게끔 하였습니다. 여기서도 Innovation Number가 활용됩니다. Similarity는 앞서 보셨던 disjoint gene의 숫자($D$), excess gene의 숫자($E$), 그리고 matching gene의 weight값의 차이($\overline{W}$)로 계산합니다:<br>
 $\delta = \frac{c_1E}{N} + \frac{c_2D}{N} + c_3\cdot\overline{W}$<br>
 
 이 similarity measure로 population 내 species의 구분이 가능해졌는데요, 이를 이용해 population 내 species의 다양성을 확보해주기 위해 각 individual의 fitness를 다음과 같이 조정해줍니다:<br>

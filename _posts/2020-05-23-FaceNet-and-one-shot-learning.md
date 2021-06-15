@@ -1,5 +1,6 @@
 ---
 layout: post
+background: '/img/backgrounds/deepfake2.jpg'
 title:  "FaceNet, One-Shot Learning, Triplet Loss"
 date:   2020-05-22 22:59:59
 categories: Deepfake
