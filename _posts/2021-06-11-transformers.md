@@ -1,7 +1,7 @@
 ---
 layout: post
 background: '/img/backgrounds/transformers.jpg'
-title:  "Attention and Transformer"
+title:  "Attention and Transformer - part1"
 date:   2021-06-13 23:59:59
 categories: Transformer
 tags: attention_mechanism, transformers
@@ -84,3 +84,23 @@ Seq-to-seq RNN에 attention mechanism을 구현하면서 추가된 softmax나 we
 
 Image caption generation의 논문 결과를 몇 개 보여드립니다:<br />
 ![Fig12](https://tildacorp.github.io/img/image_caption_generation.PNG "Image Caption Generation Results"){: width="70%"}{: .aligncenter}
+
+위의 결과를 냈던 논문 제목이 "Show, Attend, and Tell: Neural Image Caption Generation with Visual Attention (Xu et. al., ICML 2015)"였는데요, 파급력이 큰 다른 ML 논문들과 마찬가지로 다음과 같은 (제목만 들어도 얼추 내용이 상상이 가는) 많은 후속작들을 만들어냈습니다:
+<ul>
+<li>Ask, attend, and answer (Xu and Saenko, ECCV 2016)</li>
+<li>Show, ask, attend, and answer (Kazemi and Elqursh, 2017)
+<ul><li>Look at image and/or read question text, attend to image/text regions, produce answer</li></ul>
+</li>
+<li>Listen, attend, and spell (Chan et. al., ICASSP 2016)
+<ul><li>Process raw audio, attend to audio regions, produce text of the audio</li></ul>
+</li>
+<li>Listen, attend, and walk (Mei et. al., AAAI 2016)
+<ul><li>Process text, attend to text regions, output navigation commands to robot</li></ul>
+</li>
+<li>Show, attend, and interact (Qureshi et. al., ICRA 2017)
+<ul><li>Process image, attend to image regions, output robot control command</li></ul>
+</li>
+<li>Show, attend, and read (Li et. al., AAAI 2019)
+<ul><li>Process image, attend to image regions, output text</li></ul>
+</li>
+</ul>
