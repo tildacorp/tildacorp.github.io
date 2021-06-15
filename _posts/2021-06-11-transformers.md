@@ -48,8 +48,37 @@ Decoder는 $s_0$과 context vector $c$로 전달된 encoder의 정보에 decoder
 
 
 이제 계산된 alignment score에 softmax를 붙여 '가중치의 확률분포'를 구한 후, 이것과 encoded sequence의 linear combination (weighted sum)을 계산하여 context vector $c_1$을 만들어냅니다. Context vector $c_1$의 의미는 'decoder의 state가 $s_0$일 때 encoded input sequence에 적절한 가중치를 매겨 정보를 context vector $c_1$으로 가져오면, 이후 decoder input $y_0$이 들어왔을 때 가장 적절한 $s_1$과 $y_1$을 만들어 낼 수 있다'는 정도라고 말할 수 있습니다. 글보다는 그림이 이해하기 쉽습니다:<br />
+<p><b>Initial context vector 계산</b></p>
 
 ![Fig7](https://tildacorp.github.io/img/seq2seq_rnn_attention_step3.PNG "Seq-to-seq with RNN and Attention (context vector))"){: width="80%"}{: .aligncenter}
+
+<p><b>Initial decoder output 계산</b></p>
+
 ![Fig8](https://tildacorp.github.io/img/seq2seq_rnn_attention_step4.PNG "Seq-to-seq with RNN and Attention (first decoder output))"){: width="90%"}{: .aligncenter}
+
+<p><b>번역 완료</b></p>
+
 ![Fig9](https://tildacorp.github.io/img/seq2seq_rnn_attention_step5.PNG "Seq-to-seq with RNN and Attention (translation completion))"){: width="100%"}{: .aligncenter}
+
+앞서 설명한대로 decoder의 time step마다 context vector를 별도로 계산해서 사용한 것을 보실 수 있습니다. Encoded input sequence의 정보가 decoder까지 오는 데 bottleneck이 없어진 셈이지요. 이러한 decoder state-dependent한 context vector는 각 decoder 단계에서 어떤 input에 focus를 두어야 하는지를 알려주어서 매우 긴 input sequence의 번역도 가능해졌습니다. 이렇게 입력에 가중치를 두는 것이 서두에 언급하였던 attentional mechanism과 유사하여, 이를 딥러닝에서도 attentional mechanism이라고 부릅니다.<br />
+
+Seq-to-seq RNN에 attention mechanism을 구현하면서 추가된 softmax나 weighted sum 등은 모두 미분 가능한 연산들이어서, 기존의 학습 방식에 크게 지장을 주지 않고 end-to-end로 backpropagation을 통한 동일한 방식의 네트워크 학습만으로 attention weight까지 학습할 수 있습니다. 즉, decoder state마다 어떤 input part에 focus를 두어야 하는지를 end-to-end 방식으로 네트워크가 스스로 학습한다는 말입니다.<br />
+
+한 가지 흥미로운 점은, attention을 사용한 decoder는 encoded input ($h_i$)이 ordered sequence라는 정보를 전혀 사용하지 않고 있다는 것입니다. 매번 $c_t$를 구할 때마다 $s_{t-1}$을 모든 $h_i$와 weighted sum을 구하였을 뿐입니다. Input이 ordered sequence일 필요가 없다는 점은 attention mechanism을 image input에 사용할 수 있게 해서, 이미지를 넣으면 caption을 출력하는 image-to-sequence와 같은 응용이 가능해졌습니다. 설명은 동일하기 때문에 상세한 그림들로 대신합니다:<br />
+
+<p><b>Image encoded with CNN</b></p>
+
+![Fig9](https://tildacorp.github.io/img/img2sec_attention_step1.PNG "Img-2-seq with CNN and Attention (after encoding))"){: width="70%"}{: .aligncenter}
+
+<p><b>Initial decoder output 계산</b></p>
+
+![Fig10](https://tildacorp.github.io/img/img2sec_attention_step2.PNG "Img-2-seq with CNN and Attention (first decoder output))"){: width="80%"}{: .aligncenter}
+
+<p><b>Second decoder output 계산</b></p>
+
+![Fig11](https://tildacorp.github.io/img/img2sec_attention_step3.PNG "Img-2-seq with CNN and Attention (second decoder output))"){: width="90%"}{: .aligncenter}
+
+<p><b>Image caption 생성 완료</b></p>
+
+![Fig12](https://tildacorp.github.io/img/img2sec_attention_step4.PNG "Img-2-seq with CNN and Attention (caption translation completion))"){: width="100%"}{: .aligncenter}
 
