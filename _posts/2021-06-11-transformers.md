@@ -26,7 +26,9 @@ use_math: true
 </p>
 
 RNN에서는 encoder가 input sequence를 순서대로 처리한 후, encoding된 input 정보가 두 가지 형태로 decoder에 전달됩니다. 하나는 decoder의 initial (hidden) state인 $s_0$이고, 다른 하나는 context vector $c$ 입니다 (주로 $c = h_T$). 이 상태를 그림으로 나타내면 다음과 같습니다:
-<p>
-Encoder: $h_t = f_w(x_t, h_{t-1})$
-</p>
+<!--<p>Encoder: $h_t = f_w(x_t, h_{t-1})$</p>-->
 ![Fig2](https://tildacorp.github.io/img/seq2seq_rnn_step1.PNG "Seq-to-seq with RNN (after encoding)"){: width="70%"}{: .aligncenter}
+
+Decoder는 $s_0$과 context vector $c$로 전달된 encoder의 정보에 decoder input을 조합하여 decoder의 next hidden state를 만들고, 이로부터 번역 sequence의 첫 단어를 생성하게 됩니다. 여기까지를 그림으로 나타내면 다음과 같습니다:
+
+![Fig3](https://tildacorp.github.io/img/seq2seq_rnn_step2.PNG "Seq-to-seq with RNN (after decoding the first word)"){: width="70%"}{: .aligncenter}
