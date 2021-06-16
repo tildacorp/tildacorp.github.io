@@ -99,12 +99,56 @@ Self-attention layer 여러개를 parallel하게 배치하여 동시에 사용�
 ![Fig9](https://tildacorp.github.io/img/multihead_self_attention_layer.PNG "Multihead Self-attention Layer - step 3"){: width="100%"}{: .aligncenter}
 
 
-Set of vector를 input으로 하는 self-attention layer가 기존 network와 결합되어 사용되는 예를 보도록 하겠습니다. CNN과 함께 사용될 때입니다:
+Set of vector를 input으로 하는 self-attention layer가 기존 network와 결합되어 사용되는 예를 보도록 하겠습니다. CNN과 함께 사용될 때이며, residual connection (skip connection)이 추가되어있습니다.:
 
 <p><b>Self-attention with CNN</b></p>
 
 ![Fig9](https://tildacorp.github.io/img/cnn_self_attention.PNG "Self-attention with CNN"){: width="100%"}{: .aligncenter}
 
 
+Sequence input을 처리하는 세 가지 primitive (RNN, 1D Conv, Self-attention)들을 비교해보면, RNN은 긴 sequence도 처리가 가능한 반면 parallel processing이 불가하여 high-end hardware의 잇점을 살리지 못한다는 단점이 있고, 1D convolution kernel을 sliding window 방식으로 적용하는 방법은 길이가 긴 sequence의 경우에 그만큼 많은 conv layer가 필요하다는 단점이 있는 반면 각 conv layer의 output을 parallel하게 도출할 수 있다는 장점이 있습니다. Self-attention은 이 둘의 단점들을 모두 극복한 셈으로, 긴 sequence도 한 번에 parallel하게 처리할 수 있습니다. Memory를 많이 잡아먹는다는 단점이 있긴 하지만 GPU는 계속 발전하고 있기 때문에 sequenced input을 처리하기에는 self-attention이 더 나은 primitive라고 할 수 있겠습니다.
+
+<p><b>Comparison of sequence processing primitives</b></p>
+
+![Fig10](https://tildacorp.github.io/img/seq_proc_comparison.PNG "Comparison of Sequence Processing Primitives"){: width="100%"}{: .aligncenter}
 
 
+드!디!어! Transformer입니다. 앞서 말씀드린 "Attention is All You Need" (Vaswani et. al., NIPS 2017) 논문에서 소개된 network으로, encoder-decoder로 구성되어 있으며, encoder에 multihead self-attention layer, decoder에는 masked multihead self-attention layer, 그리고 encoder와 decoder 사이를 연결하는 multihead self-attention layer로 구성되어 있습니다. Input과 output은 word embedding과 positional embedding이 적용됩니다. Transformer 논문을 처음 보았을 때는 '무슨 소리를 하는건가' 싶은 부분들이 좀 있었는데, attention mechanism의 발전 과정을 쭉 살펴보고 나서 보니 좀 더 잘 이해되지 않으신가요?<br />
+
+![Fig11](https://tildacorp.github.io/img/transformer.PNG "Transformer Network Structure"){: width="100%"}{: .aligncenter}
+
+
+Encoder와 decoder를 구성하는 Transformer block을 다시 도식화해보면 다음과 같습니다. 이런 Transformer block을 겹겹이 쌓아서 하나의 Transformer 모델이 만들어지게 됩니다:<br />
+
+![Fig12](https://tildacorp.github.io/img/transformer_block.PNG "Transformer Block"){: width="100%"}{: .aligncenter}
+
+
+Vaswani et. al.의 논문에서는 encoder와 decoder에 각각 6개씩의 Transformer block을 사용했습니다. Encoder 및 decoder의 input dimension은 512였으며, 6 head 짜리 self attention layer를 사용했습니다.
+
+
+
+NLP에 있어 Transformer 모델은 마치 Computer Vision에서 ImageNet이 나왔을 때와 같은 임팩트를 주었습니다. 이후 NLP는 인터넷 상의 수많은 text로 복잡한 Transformer를 pre-train 시켜놓은 다음, 각자의 task에 맞게 fine-tune 시키는 방식의 연구가 주를 이루었습니다 (물론 구현의 detail과 hyper-parameter는 다르겠지만요). 그리고 CNN 모델들이 복잡도를 더해가며 성능 arms race를 벌였던 것과 같은 일이 Transformer 쪽에서도 일어나게 됩니다. 돈으로 승부하는 quantitative expansion이...
+
+<ul>
+  <li>Transformers (Google):
+    <ul><li>12 layers, 8~16 heads, 65M params, 8x P100 (12hrs~3.5days)</li></ul>
+  </li>
+  <li>BERTs (Google):
+    <ul><li>12~24 layers, 12~16 heads, 110~340M params</li></ul>
+  </li>
+  <li>RoBERTa (Facebook):
+    <ul><li>24 layers, 16 heads, 355M params, 1024x V100 (1day)</li></ul>
+  </li>
+  <li>GPT-2's (OpenAI):
+    <ul><li>12~48 layers, 12~48 heads, 117M~1.5B params</li></ul>
+  </li>
+  <li>Megatron-LM's (Nvidia):
+    <ul><li>40~72 layers, 16~32 heads, 1.2~8.3B params, 512x V100 (9days)</li></ul>
+  </li>
+  <li>GPT-3's (OpenAI):
+    <ul>
+      <li>12~96 layers, 12~96 heads, 125M~175B params</li>
+      <li>355 years if trained on a single V100</li>
+    </ul>
+  </li>
+</ul>
