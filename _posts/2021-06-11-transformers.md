@@ -42,7 +42,7 @@ Decoder는 $s_0$과 context vector $c$로 전달된 encoder의 정보에 decoder
 ![Fig5](https://tildacorp.github.io/img/seq2seq_rnn_attention_step1.PNG "Seq-to-seq with RNN and Attention (after encoding)"){: width="70%"}{: .aligncenter}
 
 
-이제부터 다른데요, encoded sequence와 initial decoder state를 이용하여 $alignment\ score$라는 scalar 값들을 구합니다. $Alignment\ score$는 각 encoder input마다 하나씩을 구하며, 이는 current decoder state에서 어떤 encoder input에 얼마만큼씩의 '가중치'를 두어야 하는지를 의미합니다. 예를 들면 "I"는 "나는"에, "bread"는 "빵을"에 가장 높은 가중치를 두어야 할 것이고, "was"는 "나는"과 "먹고"에 약간씩을, "있었다"에 가장 높은 가중치를 두어야 할 것입니다.<br />
+이제부터 다른데요, encoded sequence와 initial decoder state를 이용하여 $alignment\ score$라는 scalar 값들을 구합니다. $Alignment\ score$는 각 encoder input마다 하나씩을 구하며, 이는 current decoder state에서 어떤 encoder input에 얼마만큼씩의 '가중치'를 두어야 하는지를 의미합니다. 예를 들면 "I"는 "나는"에, "bread"는 "빵을"에 가장 높은 가중치를 두어야 할 것이고, "eating"는 "먹고"에 가장 높은 가중치를, "있었다"에도 적당한 가중치를 두어야 할 것입니다.<br />
 
 ![Fig6](https://tildacorp.github.io/img/seq2seq_rnn_attention_step2.PNG "Seq-to-seq with RNN and Attention (alignment scores))"){: width="70%"}{: .aligncenter}
 
