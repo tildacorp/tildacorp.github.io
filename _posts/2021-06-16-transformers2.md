@@ -85,10 +85,26 @@ use_math: true
 이 self-attention layer는 input vector의 순서가 바뀌면 output vector도 똑같이 순서가 바뀌도록 출력하는 굉장히 general한 network로, input order랑 상관없이 동작하는 'permutation equivariant'한 ($f(s(x)) = s(f(x))$) 모듈입니다. 그렇기 때문에 번역과 같이 input의 sequence가 중요한 task의 경우에는 input vector에 positional encoding을 붙여서 집어넣으면 됩니다.
 
 
-때로는 task에 따라 network가 previous input만 볼 수 있게 제한해야 하는 경우도 있습니다. 예를 들면 '지금까지의 text로 다음 word 맞추기' 이런 task에서는 input vector가 full sentence가 들어오는 것이 아니라, word by word로 들어오고 network는 current and all previous input만을 가지고 next word를 예측할 것입니다. RNN에서는 input이 하나씩 순서대로 들어오기 때문에 구조적으로 이런 제약이 걸릴 수 밖에 없었는데요, attention layer는 input을 통으로 집어넣어도 동작하고, 순서가 있는 input도 positional encoding을 붙여서 통으로 집어넣으면 동작합니다. Positional encoding이 붙어있다면 input 순서를 뒤죽박죽으로 집어넣어도 ordered output을 뽑아낼 수도 있겠죠. 이런 경우에 'future' input이 모델에 노출되는 것을 막기 위해 mask를 사용할 수 있습니다. 방법은 alignment score의 future input 부분을 $-{\infinity}$로 넣어주어 softmax 계산 후 해당 부분의 attention weight가 0이 되게 만들면 됩니다. 그림으로 설명하죠:
+때로는 task에 따라 network가 previous input만 볼 수 있게 제한해야 하는 경우도 있습니다. 예를 들면 '지금까지의 text로 다음 word 맞추기' 이런 task에서는 input vector가 full sentence가 들어오는 것이 아니라, word by word로 들어오고 network는 current and all previous input만을 가지고 next word를 예측할 것입니다. RNN에서는 input이 하나씩 순서대로 들어오기 때문에 구조적으로 이런 제약이 걸릴 수 밖에 없었는데요, attention layer는 input을 통으로 집어넣어도 동작하고, 순서가 있는 input도 positional encoding을 붙여서 통으로 집어넣으면 동작합니다. Positional encoding이 붙어있다면 input 순서를 뒤죽박죽으로 집어넣어도 ordered output을 뽑아낼 수도 있겠죠. 이런 경우에 'future' input이 모델에 노출되는 것을 막기 위해 mask를 사용할 수 있습니다. 방법은 alignment score의 future input 부분을 $-{\infty}$로 넣어주어 softmax 계산 후 해당 부분의 attention weight가 0이 되게 만들면 됩니다. 그림으로 설명하죠:
 
 <p><b>Masked self-attention layer</b></p>
 
 ![Fig8](https://tildacorp.github.io/img/masked_self_attention_layer.PNG "Masked Self-attention Layer - step 3"){: width="100%"}{: .aligncenter}
+
+
+Self-attention layer 여러개를 parallel하게 배치하여 동시에 사용할 수도 있습니다. 예를 들면 language processing의 경우에 여러 self-attention layer가 각각 시제, 성/수, 단/복수 등의 문법적인 요소에 집중하게끔 하여 보다 정확한 output을 만들어 낼 수 있습니다. 이렇게 여러 self-attention layer를 parallel하게 사용하는 것을 multihead self-attention layer라고 합니다:
+
+<p><b>Multihead self-attention layer</b></p>
+
+![Fig9](https://tildacorp.github.io/img/multihead_self_attention_layer.PNG "Multihead Self-attention Layer - step 3"){: width="100%"}{: .aligncenter}
+
+
+Set of vector를 input으로 하는 self-attention layer가 기존 network와 결합되어 사용되는 예를 보도록 하겠습니다. CNN과 함께 사용될 때입니다:
+
+<p><b>Self-attention with CNN</b></p>
+
+![Fig9](https://tildacorp.github.io/img/cnn_self_attention.PNG "Self-attention with CNN"){: width="100%"}{: .aligncenter}
+
+
 
 
