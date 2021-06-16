@@ -45,6 +45,9 @@ use_math: true
 
 가장 먼저 similarity function이 generalize 됩니다. 초기 attention mechanism에서는 $f_{att}$를 network layer로 학습하였는데, 이를 학습 없이 훨씬 효율적인 dot product로 계산해도 비슷한 성능을 보인다는 점이 밝혀졌습니다. 이 dot product high dimensional input에 대해 너무 큰 값이 나온다는 단점, dot product 결과의 kurtosis가 너무 높은 경우 대부분의 softmax probability가 0이 되어버려서 gradient 또한 0이 되어버려서 vanishing gradient problem이 발생하여 학습이 매우 어려워진다는 단점이 있기 때문에, 이 dot product를 $sqrt(dim(q)=D_Q)$로 나눈 scaled dot product로 추가 개선됩니다.<br />
 
-![Fig1](https://tildacorp.github.io/img/attention_generalization.PNG "Generalization of Attention Mechanism"){: width="70%"}{: .aligncenter}
+![Fig1](https://tildacorp.github.io/img/attention_generalization1.PNG "Generalization of Attention Mechanism"){: width="70%"}{: .aligncenter}
 
-다음 단계의 generalization은 multiple query vector를 사용하는 것입니다.
+
+다음 단계의 generalization은 multiple query vector를 사용하는 것입니다. 이전까지는 decoder time step마다 하나의 query vector ($q$, 예전의 $s_i$)를 사용하여 input state ($X$, 예전의 $H$)에 대한 하나씩의 similarity score를 구했는데요, 이제 모든 decoder state에 대한 모든 input state들의 가중치를 한번에 계산하자는 것입니다. 앞서 similarity function을 scaled dot product로 generalize를 해 두었으니, 이제 similarity score를 구하는 것은 $Q$ (set of $q$)와 $X$의 matrix multiplication (MatMul)으로 간단히 구할 수 있습니다. 이렇게 구해진 similarity score에 한 방향으로 softmax를 적용하면 attention weight를 구할 수 있고, 이것과 input state와 linear combination을 통해 encoder의 output vector를, 역시 한 번에 구할 수 있습니다.<br />
+
+![Fig2](https://tildacorp.github.io/img/attention_generalization2.PNG "Further Generalization of Attention Mechanism"){: width="80%"}{: .aligncenter}
