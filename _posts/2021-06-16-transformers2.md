@@ -2,11 +2,49 @@
 layout: post
 background: '/img/backgrounds/transformers.jpg'
 title:  "Attention and Transformer - part2"
-date:   2021-06-16 23:59:59
+date:   2021-06-15 23:59:59
 categories: Transformer
 tags: attention_mechanism, transformers
 excerpt: 어텐션과 트랜스포머
 use_math: true
 ---
 
-지난 [포스트](https://tildacorp.github.io/2021/06/14/transformers/)에 이어 
+지난 [포스트](https://tildacorp.github.io/2021/06/14/transformers/)에 attention mechanism이 다양한 task에 사용될 수 있다는 것을 보았습니다.
+많은 연구자들의 관심이 쏠리자 결국 attention mechanism을 보다 더 다양한 task에 쉽게 사용하기 위한 generalization이 이루어지게 되고, 이렇게 일반화된 attention structure는 후에 다양한 network에 layer로 쉽게 넣어서 사용할 수 있게 됩니다. 이를 위해 지금까지 사용했던 notation을 재정의해보겠습니다.
+
+
+<h4>Attention Layer</h4>
+<p>Inputs:</p>
+<ul>
+  <li> Query vector: $q$
+    <ul><li>shape: $D_Q$ (dimensionality), 지난 설명에서는 decoder hidden vector $S_i$</li></ul>
+  </li>
+  <li>Input vectors: $X$
+    <ul><li>shape: $N_X\times D_Q$, 지난 설명에서의 encoder hidden vector $H$</li></ul>
+  </li>
+  <li>Similarity function:
+    <ul><li>$f_{att}$</li></ul>
+  </li>
+</ul>
+
+<p>Computation:</p>
+<ul>
+  <li> Similarities: $e$
+    <ul>
+      <li>shape: $N_X$</li>
+      <li>$e_i = f_{att}(q, X_i)$</li>
+    </ul>
+</li>
+  <li>Attention weights: $a = softmax(e)$
+    <ul><li>shape: $N_X$</li></ul>
+  </li>
+  <li>Output vector: $y = \sum_{i}a_i X_i$
+    <ul><li>shape: $D_X$</li></ul>
+  </li>
+</ul>
+
+가장 먼저 similarity function이 generalize 됩니다. 초기 attention mechanism에서는 $f_{att}$를 network layer로 학습하였는데, 이를 학습 없이 훨씬 효율적인 dot product로 계산해도 비슷한 성능을 보인다는 점이 밝혀졌습니다. 이 dot product high dimensional input에 대해 너무 큰 값이 나온다는 단점, dot product 결과의 kurtosis가 너무 높은 경우 대부분의 softmax probability가 0이 되어버려서 gradient 또한 0이 되어버려서 vanishing gradient problem이 발생하여 학습이 매우 어려워진다는 단점이 있기 때문에, 이 dot product를 $sqrt(dim(q)=D_Q)$로 나눈 scaled dot product로 추가 개선됩니다.<br />
+
+![Fig1](https://tildacorp.github.io/img/attention_generalization.PNG "Generalization of Attention Mechanism"){: width="70%"}{: .aligncenter}
+
+다음 단계의 generalization은 multiple query vector를 사용하는 것입니다.
