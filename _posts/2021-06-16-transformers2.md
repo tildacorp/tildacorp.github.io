@@ -73,4 +73,22 @@ use_math: true
 ![Fig6](https://tildacorp.github.io/img/attention_layer3.PNG "Attention Layer - step 3"){: width="100%"}{: .aligncenter}
 
 
+이제 다른 network에 plug-in 해서 사용할 수 있는 general한 형태의 attention layer가 완성되었습니다. 최종 결과물을 output하기 위한 부분(decoder)에서 query vector를 만들어서, input vector와 잘 조합하여 해당 output이 input의 어떤 부분에 focusing을 할 지를 학습하는 방법이죠. 그런데 이렇게 query vector를 다른 부분에서 가져오지 말고, 'input vector만 입력으로 받고, 여기에 뭔가 matrix 연산을 시켜서 input vector가 query vector를 predict하게끔 만들어 버리자'는 아이디어를 적용한 논문이 있었으니 그게 바로 "Attention is all you need"의 self-attention 입니다. 왜 'self' attention인지도 감이 좀 오시죠?
+
+
+조금 전 generalization에서 key matrix와 value matrix를 쓴 것과 마찬가지로 query matrix를 사용하여 input vector와 곱해 query vector를 만들어 내고, 이후부터는 별도의 query vector가 있었던 때와 똑같이 동작하면 됩니다:
+
+<p><b>Self-attention layer</b></p>
+
+![Fig7](https://tildacorp.github.io/img/self_attention_layer.PNG "Self-attention Layer - step 3"){: width="100%"}{: .aligncenter}
+
+이 self-attention layer는 input vector의 순서가 바뀌면 output vector도 똑같이 순서가 바뀌도록 출력하는 굉장히 general한 network로, input order랑 상관없이 동작하는 'permutation equivariant'한 ($f(s(x)) = s(f(x))$) 모듈입니다. 그렇기 때문에 번역과 같이 input의 sequence가 중요한 task의 경우에는 input vector에 positional encoding을 붙여서 집어넣으면 됩니다.
+
+
+때로는 task에 따라 network가 previous input만 볼 수 있게 제한해야 하는 경우도 있습니다. 예를 들면 '지금까지의 text로 다음 word 맞추기' 이런 task에서는 input vector가 full sentence가 들어오는 것이 아니라, word by word로 들어오고 network는 current and all previous input만을 가지고 next word를 예측할 것입니다. RNN에서는 input이 하나씩 순서대로 들어오기 때문에 구조적으로 이런 제약이 걸릴 수 밖에 없었는데요, attention layer는 input을 통으로 집어넣어도 동작하고, 순서가 있는 input도 positional encoding을 붙여서 통으로 집어넣으면 동작합니다. Positional encoding이 붙어있다면 input 순서를 뒤죽박죽으로 집어넣어도 ordered output을 뽑아낼 수도 있겠죠. 이런 경우에 'future' input이 모델에 노출되는 것을 막기 위해 mask를 사용할 수 있습니다. 방법은 alignment score의 future input 부분을 $-{\infinity}$로 넣어주어 softmax 계산 후 해당 부분의 attention weight가 0이 되게 만들면 됩니다. 그림으로 설명하죠:
+
+<p><b>Masked self-attention layer</b></p>
+
+![Fig8](https://tildacorp.github.io/img/masked_self_attention_layer.PNG "Masked Self-attention Layer - step 3"){: width="100%"}{: .aligncenter}
+
 
