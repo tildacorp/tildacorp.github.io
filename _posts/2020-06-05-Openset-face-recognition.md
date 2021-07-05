@@ -21,7 +21,7 @@ Discriminative feature를 효과적으로 배워보자는 두 가지 시도가 �
 
 **Contrastive Loss**<br>
 Contrastive loss(또는 pairwise ranking loss)는 anchor-positive, anchor-negative pair를 구성해서 각 이미지를 Siamese network에 집어넣어 나온 feature들을 이용하여 다음의 loss를 최적화하게 됩니다:<br>
-$L_{contrasive} = (1-Y) \frac 1 2 (\Vert f(x^i) - f(x^j) \Vert)^2 + Y \frac 1 2{max(0, m - \Vert f(x^i) - f(x^j) \Vert)}^2$<br>
+$L_{contrastive} = (1-Y) \frac 1 2 (\Vert f(x^i) - f(x^j) \Vert)^2 + Y \frac 1 2{max(0, m - \Vert f(x^i) - f(x^j) \Vert)}^2$<br>
 $Y$: 바이너리 label (anchor-positive이면 0, anchor-negative이면 1)
 $f(x^i)$: anchor sample<br>
 $f(x^j)$: positive 또는 negative sample<br><br>
