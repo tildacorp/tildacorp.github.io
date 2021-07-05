@@ -43,7 +43,7 @@ $\sum_i^N[{\Vert f(x^a_i)-f(x^p_i) \Vert}^2_2-{\Vert f(x^a_i)-f(x^n_i) \Vert}^2_
 
 
 첫째는 triplet의 갯수가 너무나 많다는 것입니다. 예를 들어 학습 데이터에 10,000명의 face ID가 있고 각 ID마다 30장 씩의 사진이 들어있다고 하면, 조합 가능한 triplet의 경우의 수가<br>
-$(30\times10,000)_{anchor}$
+$(30\times10,000)_{anchor} \times 29_{positive}$
 나 될 것입니다 (계산 맞나요 ㅠㅠ, 암튼 엄청 커집니다). 저자는 이 문제를 해결하기 위해, 가능한 모든 조합의 triplet을 만드는 대신 manageable한 숫자의 triplet만을 만들어서 학습하는 방식을 택합니다. 전체 데이터의 mini-batch를 만들어서, 그 안에서만 triplet을 조합하는 방식으로요. 본 논문에서는 ID (class)를 일부만 포함하되, 각 ID마다 40장 씩의 얼굴 사진을 포함하도록 mini-batch를 구성하였습니다. 뒤에 batch size 1,800으로 실험했다고 하니, 한 mini-batch마다 ID가 45명씩 들어가게 구성한 것 같습니다 (총 face data 숫자는 100M~200M).
 
 두 번째 문제는 꼭 triplet 학습에 국한된 것이 아니라 전반적인 네트워크 학습의 효율성에 관한 것입니다. 머신러닝에서 학습을 할 때 초반부터 hard example로 학습을 하면 local minima에 빠질 가능성이 높다(또는 mode collapse가 생긴다)고 알려져 있습니다. 사람의 학습 방법이 그러하듯이, 학습 데이터의 난이도를 쉬운 것부터 점차적으로 어렵게 가져가야 보다 나은 generalizability와 빠른 수렴이 가능하다는 것이 curriculum learning의 개념인데요 (high-quality 얼굴 이미지를 생성한 PGGAN도 이 *start small* 컨셉을 이용한 것이죠), 저자는 triplet의 구성에 이 아이디어를 채용합니다. 그럼 triplet이 쉽고 어렵다는 구분은 어떻게 할 수 있을까요?
